@@ -1,25 +1,25 @@
 {
-  "name": "my-tanstack-app",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "packageManager": "bun@1.2.19",
-  "scripts": {
-    "dev": "turbo run dev",
-    "dev:web": "turbo run dev --filter=web",
-    "dev:cli": "bun run --watch apps/cli/src/index.ts",
-    "dev:convex": "npx convex dev",
-    "cli": "bun run apps/cli/src/index.ts",
-    "build": "turbo run build",
-    "check": "turbo run check",
-    "test": "turbo run test",
-    "lint": "turbo run lint"
-  },
-  "devDependencies": {
-    "@typescript/native-preview": "^7.0.0-dev.20260201.1",
-    "convex": "^1.31.5",
-    "turbo": "^2.8.1"
-  }
+	"name": "my-tanstack-app",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"packageManager": "bun@1.2.19",
+	"scripts": {
+		"dev": "turbo run dev",
+		"dev:web": "turbo run dev --filter=web",
+		"dev:cli": "bun run --watch apps/cli/src/index.ts",
+		"dev:convex": "npx convex dev",
+		"cli": "bun run apps/cli/src/index.ts",
+		"build": "turbo run build",
+		"check": "turbo run check",
+		"test": "turbo run test",
+		"lint": "turbo run lint"
+	},
+	"devDependencies": {
+		"@typescript/native-preview": "^7.0.0-dev.20260208.1",
+		"convex": "^1.31.5",
+		"turbo": "^2.8.1"
+	}
 }

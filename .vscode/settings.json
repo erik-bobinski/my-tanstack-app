@@ -1,4 +1,7 @@
 {
+  "files.associations": {
+    "bun.lock": "jsonc"
+  },
   "files.watcherExclude": {
     "**/routeTree.gen.ts": true
   },

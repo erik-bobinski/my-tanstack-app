@@ -5,7 +5,11 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "noEmit": true,
-    "types": ["bun-types"]
+    "skipLibCheck": true,
+    "types": ["bun-types"],
+    "paths": {
+      "convex/*": ["../../convex/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "../../convex"]
 }

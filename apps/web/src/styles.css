@@ -1,5 +1,104 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg-main: #1a1a2e;
+  --color-bg-sidebar: #141424;
+  --color-bg-surface: #242438;
+  --color-bg-input: #2a2a40;
+  --color-bg-user-bubble: #2d2854;
+  --color-bg-ai-bubble: #242438;
+  --color-bg-code: #1e1e30;
+  --color-border-subtle: #2e2e44;
+  --color-accent: #8b7ec8;
+  --color-accent-hover: #9d92d4;
+  --color-accent-dim: #6b5f9e;
+  --color-text-primary: #e2e0ea;
+  --color-text-secondary: #9896a8;
+  --color-text-muted: #5e5c6e;
+}
+
 body {
-  @apply antialiased;
+  @apply antialiased bg-bg-main text-text-primary;
+}
+
+/* Highlight.js overrides for code blocks */
+pre code.hljs {
+  background: transparent;
+  padding: 0;
+}
+
+/* Markdown prose styling */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-content h1 { font-size: 1.25rem; }
+.markdown-content h2 { font-size: 1.125rem; }
+.markdown-content h3 { font-size: 1rem; }
+
+.markdown-content p {
+  margin-bottom: 0.5em;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-content ul { list-style-type: disc; }
+.markdown-content ol { list-style-type: decimal; }
+
+.markdown-content li {
+  margin-bottom: 0.25em;
+}
+
+.markdown-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.markdown-content a:hover {
+  color: var(--color-accent-hover);
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid var(--color-accent-dim);
+  padding-left: 1em;
+  color: var(--color-text-secondary);
+  margin: 0.5em 0;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  margin: 0.5em 0;
+  width: 100%;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid var(--color-border-subtle);
+  padding: 0.375em 0.75em;
+  text-align: left;
+}
+
+.markdown-content th {
+  background: var(--color-bg-surface);
+  font-weight: 600;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border-subtle);
+  margin: 1em 0;
 }

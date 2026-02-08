@@ -1,4 +1,8 @@
 import { getModelName } from '@my-tanstack-app/shared'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
+import 'highlight.js/styles/github-dark-dimmed.css'
 
 interface ChatMessageProps {
   role: 'user' | 'assistant'
@@ -16,34 +20,82 @@ export default function ChatMessage({
   const isUser = role === 'user'
 
   return (
-    <div className={`flex gap-3 px-4 py-4 ${isUser ? '' : 'bg-gray-50'}`}>
-      <div
-        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white ${
-          isUser ? 'bg-indigo-500' : 'bg-emerald-500'
-        }`}
-      >
-        {isUser ? 'U' : 'A'}
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="mb-1 flex items-center gap-2">
-          <span className="text-xs font-semibold text-gray-600">
-            {isUser ? 'You' : 'Assistant'}
-          </span>
-          {model && !isUser && (
-            <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[10px] text-gray-500">
-              {getModelName(model)}
-            </span>
-          )}
-          {isStreaming && (
-            <span className="inline-flex items-center gap-1 text-[10px] text-indigo-500">
-              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-500" />
-              streaming
-            </span>
+    <div
+      className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
+    >
+      <div className={`max-w-[80%] ${isUser ? 'items-end' : 'items-start'}`}>
+        <div
+          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+            isUser
+              ? 'bg-bg-user-bubble text-text-primary'
+              : 'bg-bg-ai-bubble text-text-primary'
+          }`}
+        >
+          {isUser ? (
+            <div className="whitespace-pre-wrap">
+              {content || '(empty message)'}
+            </div>
+          ) : (
+            <div className="markdown-content">
+              {content ? (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                    pre({ children }) {
+                      return (
+                        <pre className="my-2 overflow-x-auto rounded-lg bg-bg-code p-3 text-xs">
+                          {children}
+                        </pre>
+                      )
+                    },
+                    code({ className, children, ...props }) {
+                      const isInline = !className
+                      if (isInline) {
+                        return (
+                          <code
+                            className="rounded bg-bg-input px-1.5 py-0.5 text-xs text-accent-hover"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        )
+                      }
+                      return (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      )
+                    },
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              ) : isStreaming ? (
+                ''
+              ) : (
+                '(empty response)'
+              )}
+            </div>
           )}
         </div>
-        <div className="text-sm leading-relaxed whitespace-pre-wrap text-gray-800">
-          {content || (isStreaming ? '' : '(empty response)')}
-        </div>
+
+        {/* Model badge + streaming indicator below bubble */}
+        {!isUser && (model || isStreaming) && (
+          <div className="mt-1 flex items-center gap-2 px-1">
+            {model && (
+              <span className="text-[10px] text-text-muted">
+                {getModelName(model)}
+              </span>
+            )}
+            {isStreaming && (
+              <span className="inline-flex items-center gap-1 text-[10px] text-accent">
+                <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
+                streaming
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

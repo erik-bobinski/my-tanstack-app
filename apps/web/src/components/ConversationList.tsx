@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { convexQuery, useConvexMutation } from '@convex-dev/react-query'
 import { api } from 'convex/_generated/api'
 import { DEFAULT_MODEL } from '@my-tanstack-app/shared'
-import { Plus, Trash2, MessageSquare } from 'lucide-react'
+import { Plus, Trash2, MessageSquare, Home } from 'lucide-react'
 
 export default function ConversationList() {
   const { data: conversations, isPending } = useQuery(
@@ -12,7 +12,6 @@ export default function ConversationList() {
   const createConversation = useConvexMutation(api.conversations.create)
   const removeConversation = useConvexMutation(api.conversations.remove)
 
-  // Get conversationId from URL params if we're on a chat page
   const params = useParams({ strict: false }) as { conversationId?: string }
   const activeId = params.conversationId
 
@@ -25,39 +24,59 @@ export default function ConversationList() {
   }
 
   return (
-    <div className="flex h-full w-64 flex-col border-r border-gray-200 bg-gray-50">
-      <div className="flex items-center justify-between border-b border-gray-200 p-3">
-        <h2 className="text-sm font-semibold text-gray-700">Conversations</h2>
+    <div className="flex h-full w-64 flex-col border-r border-border-subtle bg-bg-sidebar">
+      {/* App title + nav */}
+      <div className="flex items-center gap-2 border-b border-border-subtle px-3 py-3">
+        <MessageSquare size={16} className="text-accent" />
+        <span className="text-sm font-semibold text-text-primary">AI Chat</span>
+        <Link
+          to="/"
+          className="ml-auto flex h-7 w-7 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-bg-surface hover:text-text-secondary"
+          title="Home"
+        >
+          <Home size={14} />
+        </Link>
+      </div>
+
+      {/* New conversation button */}
+      <div className="border-b border-border-subtle p-2">
         <button
           onClick={handleNew}
-          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md bg-indigo-500 text-white transition-colors hover:bg-indigo-600"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-accent-hover"
           title="New conversation"
         >
           <Plus size={14} />
+          New Chat
         </button>
       </div>
 
+      {/* Conversation list */}
       <div className="flex-1 overflow-y-auto">
         {isPending ? (
-          <p className="p-3 text-sm text-gray-500">Loading...</p>
+          <p className="p-3 text-sm text-text-muted">Loading...</p>
         ) : conversations?.length === 0 ? (
-          <p className="p-3 text-sm text-gray-500">
+          <p className="p-3 text-sm text-text-muted">
             No conversations yet. Create one!
           </p>
         ) : (
           conversations?.map((conv) => (
             <div
               key={conv._id}
-              className={`group flex items-center border-b border-gray-100 ${
-                activeId === conv._id ? 'bg-indigo-50' : 'hover:bg-gray-100'
+              className={`group flex items-center border-b border-border-subtle/50 ${
+                activeId === conv._id
+                  ? 'bg-bg-user-bubble'
+                  : 'hover:bg-bg-surface'
               }`}
             >
               <Link
                 to="/chat/$conversationId"
                 params={{ conversationId: conv._id }}
-                className="flex min-w-0 flex-1 items-center gap-2 p-3 text-sm text-gray-800 no-underline"
+                className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2.5 text-sm text-text-primary no-underline"
               >
-                <MessageSquare size={14} className="shrink-0 text-gray-400" />
+                <MessageSquare
+                  size={13}
+                  className="shrink-0 text-text-muted"
+                />
                 <span className="truncate">{conv.title}</span>
               </Link>
               <button
@@ -65,7 +84,7 @@ export default function ConversationList() {
                   e.stopPropagation()
                   removeConversation({ id: conv._id })
                 }}
-                className="mr-2 hidden h-6 w-6 cursor-pointer items-center justify-center rounded bg-transparent text-gray-400 transition-colors hover:text-red-500 group-hover:flex"
+                className="mr-2 hidden h-6 w-6 cursor-pointer items-center justify-center rounded text-text-muted transition-colors hover:text-red-400 group-hover:flex"
                 title="Delete"
               >
                 <Trash2 size={12} />

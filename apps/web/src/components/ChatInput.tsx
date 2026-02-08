@@ -33,21 +33,11 @@ export default function ChatInput({
   }
 
   return (
-    <div className="border-t border-gray-200 bg-white p-3">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <select
-            value={model}
-            onChange={(e) => onModelChange(e.target.value)}
-            className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1.5 text-xs text-gray-700 outline-none focus:border-indigo-400"
-          >
-            {MODELS.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.name} ({m.provider})
-              </option>
-            ))}
-          </select>
-        </div>
+    <div className="px-4 pb-4 pt-2">
+      <form
+        onSubmit={handleSubmit}
+        className="mx-auto flex max-w-3xl flex-col gap-2 rounded-xl border border-border-subtle bg-bg-input p-3"
+      >
         <div className="flex gap-2">
           <textarea
             value={input}
@@ -55,16 +45,29 @@ export default function ChatInput({
             onKeyDown={handleKeyDown}
             placeholder="Type a message... (Enter to send, Shift+Enter for newline)"
             rows={2}
-            className="flex-1 resize-none rounded-lg border-2 border-gray-200 px-3 py-2 text-sm outline-none transition-colors focus:border-indigo-500"
+            className="flex-1 resize-none rounded-lg bg-transparent px-2 py-1.5 text-sm text-text-primary placeholder-text-muted outline-none"
             disabled={disabled}
           />
           <button
             type="submit"
             disabled={disabled || !input.trim()}
-            className="flex h-10 w-10 cursor-pointer items-center justify-center self-end rounded-lg bg-indigo-500 text-white transition-colors hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-9 w-9 cursor-pointer items-center justify-center self-end rounded-lg bg-accent text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
-            <Send size={16} />
+            <Send size={15} />
           </button>
+        </div>
+        <div className="flex items-center">
+          <select
+            value={model}
+            onChange={(e) => onModelChange(e.target.value)}
+            className="cursor-pointer rounded-md border border-border-subtle bg-bg-surface px-2 py-1 text-xs text-text-secondary outline-none transition-colors focus:border-accent"
+          >
+            {MODELS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.name} ({m.provider})
+              </option>
+            ))}
+          </select>
         </div>
       </form>
     </div>
